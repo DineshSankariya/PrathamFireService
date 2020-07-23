@@ -1,0 +1,61 @@
+/*nav{
+    background-color:#222831;
+    padding:4px;
+    margin-top:-7px;
+    margin-left:-5px;
+    width:100%;
+
+}
+
+nav h1{
+    font-size:35px;
+    color:white;
+    margin-left:410px;
+    padding:10px;
+    cursor:pointer;
+
+}*/
+
+.mybrand{
+
+    font-weight:bold;
+    position:relative;
+    left:25px;
+}
+
+
+.items{
+    /*margin-left:850px;*/
+    position:relative;
+    left:812px;
+}
+
+.mylinks select{
+    width:auto;
+    background:transparent;
+    border:none;
+    color:white;
+    margin-top:8px;
+    padding-left:8px;
+    width:auto;
+
+
+}
+
+.mylinks select option{
+    color:black;
+
+
+}
+.mylinks select option a{
+    padding:10px;
+}
+
+.mylinks select:focus{
+    border:none;
+}
+
+.mylinks select:active{
+    border:none;
+}
+
