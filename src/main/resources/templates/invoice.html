@@ -4,232 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <title>PATHAM FIRE SERVICE</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/invoice.css}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script th:src="@{/javascript/jquery.tablesorter.js}"></script>
-    <script th:src="@{/javascript/jquery.tablesorter.widgets.js}"></script>
-
-    <script>
-        $(document).ready(function(){
-            var glob='false';
-            //data search event in table
-            $('.search_input').on('keyup keydown',function(){
-                //console.log("key released event is triggered")
-                search_data($(this).val());
-
-            });
-            //table action event
-            $('.add').click(function(event){
-
-                event.preventDefault();
-                //$('#exampleModal').modal();
-
-                //alert($(this).attr("href"));
-                $("#exampleModal").modal();
-            });
-
-            $('.save').click(function(){
-
-                 var date=$("input[name='date']").val();
-                var bank=$("input[name='exampleRadios']").val();
-                var payment=$(".div-5 input[name='exampleRadios1']").val();
-                var client=$('.div-3_select').val();
-                var item=$('.div-4_item').val();
-                var code=$('.code').val();
-                var capacity=$('.capacity').val();
-                var rate=$('.rate').val();
-                var quantity=$('.nos').val();
-                var price=$('.amount').val();
-                var flag='false';
-                if(price){
-                    flag='true';
-                }
-
-                if(flag){
-                    data={
-                        "bank":bank,
-                        "client":client,
-                        "item":item,
-                        "code":code,
-                        "capacity":parseInt(capacity),
-                        "rate":parseFloat(rate),
-                        "nos":parseInt(quantity),
-                        "amount":parseFloat(price),
-                        "date":date,
-                        "payment":payment
-
-                    };
-                    datatopass={"invoice":data};
-                    console.log(datatopass);
-                    $.ajax({
-                        contentType: 'application/json;charset=UTF-8',
-                        url:'saveinvoice',
-                        type: 'POST',
-                        data: JSON.stringify(data),
-                        dataType: 'json',
-                        success:function(data){
-                            if(data=="ok"){
-                                $('#exampleModal').modal('toggle');
-                            }
-
-                        }
-
-                    });
-                 }else{
-                    $('.amount').css("border-color","red");
-                 }
-
-            });
-
-            $('.mybadge_edit').click(function(event){
-                event.preventDefault();
-                var id=$(this).attr("href").split("=");
-                var url=$(this).attr("href").split("?");
-                console.log(id);
-                console.log(url);
-                var id=parseInt(id[1]);
-                 console.log(id);
-                $.ajax({
-                        contentType: 'application/json;charset=UTF-8',
-                        url:'/invoicerest/find/'+id,
-                        success:function(data){
-                            console.log(data);
-                            $(".div-5 input[name=\"exampleRadios1\"]:checked").prop('checked',false);
-                            $(".div-1 input[name=\"exampleRadios\"]:checked").prop('checked',false);
-                            $("input[name='date']").val(data.date);
-                            $(".div-1 input[name='exampleRadios']").val(data.bank);
-                            $('.div-3_select').val(data.client);
-                            $('.div-4_item').val(data.item);
-                            $('.code').val(data.code);
-                            $('.capacity').val(data.capacity);
-                            $('.rate').val(data.rate);
-                            $('.nos').val(data.nos);
-                            $('.amount').val(data.amount);
-                             $('.mycheckbox').prop("checked",true);
-                            //$(".div-5 input[name=\"exampleRadios\"][value=\" + data.payment + \"]").prop('checked', true);
-                             console.log( $(".div-1 input[name='exampleRadios']").val());
-                             console.log( $(".div-5 input[name='exampleRadios']"));
-                             var banks=$("input[name='exampleRadios']");
-                             $(".div-1 input[name='exampleRadios']").each(function(){
-                                var check=$(this);
-                                 console.log( check.val());
-                                 if(check.val()===data.bank){
-                                    if(data.bank==="BOB"){
-                                        console.log( check.val());
-                                        $(".div-1 .div-1_radio-1 input[name='exampleRadios']").prop("checked",true);
-                                    }else{
-                                        $(".div-1 .div-1_radio-2 input[name='exampleRadios']").prop("checked",true);
-                                    }
+    <script th:src="@{/javascript/invoice.js}"></script>
 
 
-                                 }
-                             });
+    <!--<link rel="stylesheet" th:href="@{/Css/font-awesome.min.css}">-->
 
-                              $(".div-5 input[name='exampleRadios1']").each(function(){
-                                 var check=$(this);
-                                  console.log( check.val());
-                                 if(check.val()===data.payment){
-                                    $(this).prop("checked",true);
-                                    console.log( check.value);
-                                    if(data.payment==="Paid By Cheque"){
-                                        console.log( check.val());
-                                        $(".div-5 .div-5_radio-1 input[name='exampleRadios1']").prop("checked",true);
-                                    }else if(data.payment==="Successful Online Transfer"){
-                                        $(".div-5 .div-5_radio-2 input[name='exampleRadios1']").prop("checked",true);
-                                    }else if(data.payment==="Paid in Cash"){
-                                        $(".div-5 .div-5_radio-3 input[name='exampleRadios1']").prop("checked",true);
-                                    }else{
-                                        $(".div-5 .div-5_radio-4 input[name='exampleRadios1']").prop("checked",true);
-                                    }
-                                 }
-                             });
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 
-                             $("#exampleModal").modal();
-                        }
-
-                    });
-
-
-            });
-
-
-            function search_data(data){
-                var alert='false';
-                var num=0;
-                $('.mytable tbody tr').each(function(){
-                    var found='false';
-                    $(this).each(function(){
-                      if($(this).text().toLowerCase().indexOf(data.toLowerCase())>=0){
-                        found='true'
-                      }
-                    });
-
-                    if(found=='true'){
-                        $(this).show();
-
-                        alert='true';
-                    }else{
-                        $(this).hide();
-
-                        // $('tbody tr:first td').replaceWith("<i>No result found</i>");
-                       // $(this).innerHTML("<i>No result found</i>");
-                    }
-                });
-
-                if(alert=='false'){
-
-                    if($('.container_invoice_table .mydiv').length){
-
-                    }else{
-
-                        $('.container_invoice_table').prepend("<div class=\"alert alert-danger mydiv\" > No data found </div>");
-                        $('.container_invoice_table .mydiv').css({"width":"300px","font-size":"16px"});
-
-                    }
-                }else{
-                    if($('.container_invoice_table .mydiv').length){
-                        $('.container_invoice_table .mydiv').remove();
-                    }/*else{
-                        var datas=$('.mytable tbody tr').length;
-                        console.log(num);
-
-                        $('.container_invoice_table').prepend("<div class=\"alert alert-primary mydiv-1\" >"+num+"No data found </div>");
-                    }*/
-                }
-
-                if(!data){
-                     $('.container_invoice_table .mydiv').remove();
-                     $('.container_invoice_table .mydiv-1').remove();
-                }
-
-            }
-
-            /*if(glob=='true'){
-                    if($('.container_invoice_table .mydiv-1').length){
-
-                    }
-                    else{
-                        var datas=$('.mytable tbody tr').length;
-                        console.log(datas);
-                        $('.container_invoice_table').prepend("<div class=\"alert alert-primary mydiv-1\" >"+datas+"No data found </div>");
-                    }
-            }*/
-
-        });
-
-    </script>
 </head>
 <body>
 <div th:insert="~{header::header}"></div>
 <div class="container_invoice">
     <div class="container_line-1">
          <h1>Invoices</h1>
+
          <input type="button" value="Add Invoice" class="btn btn btn-primary add" data-toggle="modal" ><br>
         <div class="container_line-2">
             <div class="container_line-2_row">
@@ -237,10 +35,12 @@
                     Show</p>
                 <select class="form-control container_line-2_row-limit" >
 
-                    <option><div><a class="nav-link text-light" th:href="@{invoice(page=0,size=6)}">8</a></div></option>
-                    <option><a class="nav-link text-light" th:href="@{invoice(page=0,size=10)}">10</a></option>
-                    <option><a class="nav-link text-light" th:href="@{invoice(page=0,size=25)}">25</a></option>
-                    <option><a class="nav-link text-light" th:href="@{invoice(page=0,size=50)}">50</a></option>
+                    <option value="5">5</option>
+                    <option value="7">7</option>
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
                 </select>
                 <p class="container_line-2_p-2">
                     entries</p>
@@ -251,7 +51,9 @@
         </div>
 
         <div class="container_invoice_table">
-        <table class="table table-bordered table-striped  mytable ">
+
+
+            <table class="table table-bordered table-striped  mytable ">
 
             <thead class="table-light">
             <tr>
@@ -259,24 +61,29 @@
                 <th>Invoice date</th>
                 <th>Item</th>
                 <th>Payment Status</th>
-                <th>Actions</th>
+                <th >Actions</th>
             </tr>
             </thead>
             <tbody>
 
             <tr th:each="a,iStat:${invoice.content}">
 
-                <td th:text="${a.id}"></td>
+                <td th:text="${iStat.count}"></td>
                 <td th:text="${a.date}"></td>
                 <td th:text="${a.item}"></td>
                 <td th:text="${a.payment}" ></td>
-               <td  >
-                    <a th:href="@{editinvoice(id=${a.id})}" class="mybadge_edit badge-info ">
-                        Edit
+               <td id="action_links">
+                    <a th:href="@{editinvoice(id=${a.id})}" data-toggle="tooltip" data-placement="left" title="Edit Invoice" class="mybadge_edit badge-info ">
+                        <i class="fa fa-pencil edit_icon" aria-hidden="true"></i>
                     </a>
-                    <a th:href="@{delete(customer=${a.id})}" class="mybadge_delete badge-danger">
-                        Delete
+                    <a th:href="@{delete(customer=${a.id})}" data-toggle="tooltip" data-placement="left" title="Delete Invoice" class="mybadge_delete badge-danger">
+                        <i class="fa fa-trash delete_icon" aria-hidden="true"></i>
                     </a>
+                   <a th:href="@{pdf(id=${a.id})}" data-toggle="tooltip"  data-placement="right" title="View" class="mybadge_pdf badge-primary">
+                       <i class="fa fa-file pdf_icon" aria-hidden="true"></i>
+                   </a>
+
+
 
                 </td>
             </tr>
@@ -308,11 +115,11 @@
                 </span>-->
             </div>
             <div>
-                <!-- Modal -->
+                <!-- Modal for add and edit invoice -->
                 <div class="modal fade"  id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog " style="max-width:1250px;" role="document">
                         <div class="modal-content " >
-                            <div class="modal-header">
+                            <div class="modal-header add_invoice_header">
                                 <h4 class="modal-title" id="exampleModalLabel">Add Invoice</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -435,6 +242,33 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <button type="button" class="btn btn-primary save">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Delete Modal-->
+                <div class="modal fade"  id="delete_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-md"  role="document">
+                        <div class="modal-content " >
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="exampleModalLabel1">Delete Invoice</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="margin-left:50px;max-width:1250px;">
+                                <form action="#" th:action="@{delete_invoice}"  class="delete_myform" method="post">
+                                    <div class=" alert alert-danger">
+                                        <!--<label>Invoice Date : <span>*</span></label>
+                                        <input type="date" name="date" class="form-control col-5">-->
+                                        Are you sure you want to delete invoice id <label class="invoice_id"></label> .
+                                    </div>
+                                    <input type="hidden" name="delete_id" class="delete_id">
+                                </form>
+                            </div>
+                            <div class="modal-footer delete_footer">
+                                <button type="button" class="btn btn-secondary delete_close" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary delete_btn">Delete</button>
                             </div>
                         </div>
                     </div>

@@ -58,4 +58,47 @@ public class Invoice {
     @NotEmpty(message = "is required")
     private String date;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public String getItem() {
+        return item;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public Integer getNos() {
+        return nos;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public String getPayment() {
+        return payment;
+    }
+
+    public String getDate() {
+        return date;
+    }
 }

@@ -247,6 +247,22 @@ span{
     padding-left:10px;
 }
 
+.div-4 .div-4_table thead tr th:nth-child(2){
+    padding-left:10px;
+}
+
+.div-4 .div-4_table thead tr th:nth-child(3){
+    padding-left:10px;
+}
+
+.div-4 .div-4_table thead tr th:nth-child(4){
+    padding-left:10px;
+}
+
+.div-4 .div-4_table thead tr th:nth-child(7){
+    padding-left:10px;
+}
+
 
 .mycheckbox{
 
@@ -302,19 +318,49 @@ span{
 
 
 .mybadge_edit{
-    padding-right:15px;
-        padding-left:15px;
-        padding-top:4px;
-        padding-bottom:4px;
+    padding-right:7px;
+    padding-left:13px;
+    padding-top:8px;
+    padding-bottom:8px;
+    border-top-left-radius:5px;
+    border-bottom-left-radius:5px;
+    background:transparent;
+    color:#5c5757;
+    border:1px solid #5c5757;
 
 }
 
 .mybadge_delete{
-    padding-right:15px;
-        padding-left:15px;
-        padding-top:4px;
-        padding-bottom:4px;
+  padding-right:9px;
+  padding-left:13px;
+  padding-top:8px;
+  padding-bottom:8px;
+  /*border-top-right-radius:5px;
+  border-bottom-right-radius:5px;*/
+  background:transparent;
+  color:#5c5757;
+  border:1px solid #5c5757;
 
+}
+
+.mybadge_pdf{
+      padding-right:13px;
+      padding-left:13px;
+      padding-top:8px;
+      padding-bottom:8px;
+      border-top-right-radius:5px;
+      border-bottom-right-radius:5px;
+      background:transparent;
+      color:#5c5757;
+      border:1px solid #5c5757;
+}
+
+#action_links{
+    padding-top:15px;
+    padding-bottom:15px;
+}
+#action_links > a:hover {
+    border:none;
 }
 
 .mybadge:hover{
@@ -326,8 +372,16 @@ span{
 }
 
 .nos{
-    max-width:50px;
+    max-width:55px;
 }
+
+.delete_myform{
+    margin-left:-50px;
+}
+
+
+
+
 
 
 
