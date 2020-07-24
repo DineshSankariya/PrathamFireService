@@ -78,7 +78,7 @@ public class Controller {
     public void pdf(@RequestParam("id")int id, HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
         String headerkey="Content-Disposition";
-        String headervalue="inline;filename=invoice_id_"+id+".pdf";
+        String headervalue="inline;filename=invoice_id_"+String.valueOf(id)+".pdf";
         response.setHeader(headerkey,headervalue);
         InvoicePdfExporter invoicePdfExporter=new InvoicePdfExporter(invoiceRepo.findById(id).get());
         invoicePdfExporter.export(response);
