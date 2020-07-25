@@ -6,17 +6,25 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.sun.xml.internal.org.jvnet.mimepull.MIMEMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import sun.font.FontFamily;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 
 public class InvoicePdfExporter {
 
     private Invoice invoice;
+
+    private JavaMailSender javaMailSender;
 
     public InvoicePdfExporter(Invoice invoice) {
         this.invoice = invoice;
@@ -25,18 +33,18 @@ public class InvoicePdfExporter {
     private void add_table_header(PdfPTable pdfPTable){
         PdfPCell cell=new PdfPCell();
         Font font=FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-        font.setColor(Color.WHITE);
+        font.setColor(Color.BLACK);
         font.setSize(11);
 
-        cell.setBackgroundColor(Color.BLACK);
+        cell.setBackgroundColor(Color.WHITE);
         cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
         cell.setPaddingLeft(5);
-        cell.setPaddingTop(8);
-        cell.setPaddingBottom(8);
+        cell.setPaddingTop(5);
+        cell.setPaddingBottom(5);
         //cell.setPadding(10);
         //cell.setColspan(1);
 
-        cell.setPhrase(new Phrase("SNo",font));
+        cell.setPhrase(new Phrase("SNo.",font));
         pdfPTable.addCell(cell);
 
 //        cell.setPhrase(new Phrase("Bank",font));
@@ -60,7 +68,7 @@ public class InvoicePdfExporter {
         cell.setPhrase(new Phrase("Nos",font));
         pdfPTable.addCell(cell);
 
-        cell.setPhrase(new Phrase("Amount",font));
+        cell.setPhrase(new Phrase("Amount (Rs.)",font));
         pdfPTable.addCell(cell);
 
 //        cell.setPhrase(new Phrase("Payment Satus",font));
@@ -95,27 +103,41 @@ public class InvoicePdfExporter {
         pdfPTable.addCell(cell);
 
         cell.setPhrase(new Phrase(String.valueOf(invoice.getCapacity()),font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+        cell.setPaddingRight(7f);
         pdfPTable.addCell(cell);
         cell.setPhrase(new Phrase(String.valueOf(invoice.getRate()),font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+        cell.setPaddingRight(7f);
         pdfPTable.addCell(cell);
 
         cell.setPhrase(new Phrase(String.valueOf(invoice.getNos()),font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+        cell.setPaddingRight(3f);
         pdfPTable.addCell(cell);
         cell.setPhrase(new Phrase(String.valueOf(invoice.getAmount()),font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+        cell.setPaddingRight(7f);
         pdfPTable.addCell(cell);
 
         //Total Amount
         //PdfPCell cell_amount=new PdfPCell();
         cell.setPhrase(new Phrase(String.valueOf("Total Amount"),font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+        cell.setPaddingLeft(7f);
         cell.setColspan(6);
         pdfPTable.addCell(cell);
 
         cell.setPhrase(new Phrase(String.valueOf(invoice.getAmount()),font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+        cell.setPaddingRight(7f);
         cell.setColspan(1);
         pdfPTable.addCell(cell);
 
         //SGST
         cell.setPhrase(new Phrase(String.valueOf("SGST (9%)"),font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+        cell.setPaddingLeft(7f);
         cell.setColspan(6);
         pdfPTable.addCell(cell);
 
@@ -123,6 +145,8 @@ public class InvoicePdfExporter {
 
 
         cell.setPhrase(new Phrase(String.valueOf(k),font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+        cell.setPaddingRight(7f);
         cell.setColspan(1);
         pdfPTable.addCell(cell);
 
@@ -130,10 +154,14 @@ public class InvoicePdfExporter {
 
         //CGST
         cell.setPhrase(new Phrase(String.valueOf("CGST (9%)"),font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+        cell.setPaddingLeft(7f);
         cell.setColspan(6);
         pdfPTable.addCell(cell);
 
         cell.setPhrase(new Phrase(String.valueOf(k),font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+        cell.setPaddingRight(7f);
         cell.setColspan(1);
         pdfPTable.addCell(cell);
 
@@ -141,11 +169,15 @@ public class InvoicePdfExporter {
 
         //Net Amount
         cell.setPhrase(new Phrase(String.valueOf("Net Amount"),font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+        cell.setPaddingLeft(7f);
         cell.setColspan(6);
         pdfPTable.addCell(cell);
 
 
         cell.setPhrase(new Phrase(String.valueOf(k+invoice.getAmount()),font));
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+        cell.setPaddingRight(7f);
         cell.setColspan(1);
         pdfPTable.addCell(cell);
 
@@ -185,7 +217,7 @@ public class InvoicePdfExporter {
 
 
 
-    public void export(HttpServletResponse response) throws IOException {
+    public void export(HttpServletResponse response) throws IOException, MessagingException {
 
         Document document=new Document(PageSize.A4);
 
@@ -197,7 +229,7 @@ public class InvoicePdfExporter {
         font_first.setSize(10);
         font_first.setColor(Color.BLACK);
 
-        Paragraph paragraph_first=new Paragraph(String.valueOf(invoice.getDate()),font_first);
+        Paragraph paragraph_first=new Paragraph(String.valueOf("Invoice Date : "+invoice.getDate()),font_first);
 //        paragraph.setFont(font);
         paragraph_first.setAlignment(Paragraph.ALIGN_RIGHT);
         paragraph_first.setIndentationRight(2f);
@@ -281,5 +313,9 @@ public class InvoicePdfExporter {
         paragraph6.setSpacingBefore(28);
         document.add(paragraph6);
         document.close();
+
+
+
+
     }
 }

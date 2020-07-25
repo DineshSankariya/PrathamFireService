@@ -14,10 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 @org.springframework.stereotype.Controller
@@ -75,10 +79,20 @@ public class Controller {
 
 
     @GetMapping("/pdf")
-    public void pdf(@RequestParam("id")int id, HttpServletResponse response) throws IOException {
+    public void pdf(@RequestParam("id")int id, HttpServletResponse response) throws IOException, MessagingException {
         response.setContentType("application/pdf");
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        String date=simpleDateFormat.format(new Date());
+
+
+        //String newDate = new SimpleDateFormat("h:mm a").format(date);
+        SimpleDateFormat simpleDateFormat1=new SimpleDateFormat("hh.mm.ss:a");
+
+//        Date newDate=new Date();
+
+        String date1=simpleDateFormat1.format(new Date());
         String headerkey="Content-Disposition";
-        String headervalue="inline;filename=invoice_id_"+String.valueOf(id)+".pdf";
+        String headervalue="inline;filename="+date+"\\"+date1+" Invoice_id-"+String.valueOf(id)+".pdf";
         response.setHeader(headerkey,headervalue);
         InvoicePdfExporter invoicePdfExporter=new InvoicePdfExporter(invoiceRepo.findById(id).get());
         invoicePdfExporter.export(response);
