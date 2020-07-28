@@ -60,7 +60,7 @@ public class Invoice {
     @NotEmpty(message = "is required")
     private String date;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "c_id")
     @JsonBackReference
     private Client client;
