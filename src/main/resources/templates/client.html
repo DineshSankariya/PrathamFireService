@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+
+    <title>PATHAM FIRE SERVICE</title>
+    <div th:insert="~{headerdocument::header}">
+
+    </div>
+    <link rel="stylesheet" th:href="@{/css/client.css}"></link>
+    <script th:src="@{/javascript/client.js}"></script>
+
+</head>
+<body>
+    <div th:insert="~{header::header}"></div>
+    <div class="container_invoice">
+        <div class="container_line-1">
+            <h1>Clients</h1>
+
+            <input type="button" value="Add Client" class="btn btn btn-primary add" data-toggle="modal" ><br>
+            <div class="container_line-2">
+                <div class="container_line-2_row">
+                    <p class="container_line-2_p-1">
+                        Show</p>
+                    <select class="form-control container_line-2_row-limit" >
+
+                        <option value="5">5</option>
+                        <option value="7">7</option>
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <p class="container_line-2_p-2">
+                        entries</p>
+                    <div class="search">
+                        <label for="search" class="search_label">Search:</label>
+                        <input type="text" class="form-control search_input" >
+                    </div>
+                </div>
+
+                <div class="container_invoice_table">
+
+
+                    <table class="table table-bordered table-striped  mytable ">
+
+                        <thead class="table-light">
+                        <tr>
+                            <th>Sr.No</th>
+                            <th>Company Name</th>
+                            <th>Alias Name</th>
+                            <th>Email</th>
+                            <th >Contact Number</th>
+                            <th >GST No</th>
+                            <th >Status</th>
+                            <th >Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="a,iStat:${client.content}">
+
+                            <td th:text="${iStat.count}"></td>
+                            <td th:text="${a.c_name}"></td>
+                            <td th:text="${a.c_alias_name}"></td>
+                            <td th:text="${a.c_email}" ></td>
+                            <td th:text="${a.c_contact}" ></td>
+                            <td th:text="${a.gst_num}" ></td>
+                            <td th:text="${a.isactive}" ></td>
+                            <td id="action_links">
+                                <a th:href="@{'/clientrest/find/'+${a.id}}" data-toggle="tooltip" data-placement="left" title="Edit Invoice" class="mybadge_edit badge-info ">
+                                    <i class="fa fa-pencil edit_icon" aria-hidden="true"></i>
+                                </a>
+                                <a th:href="@{'/clientrest/delete_invoice/'+${a.id}}" data-toggle="tooltip" data-placement="left" title="Delete Invoice" class="mybadge_delete badge-danger">
+                                    <i class="fa fa-trash delete_icon" aria-hidden="true"></i>
+                                </a>
+<!--                                <a th:href="@{/fireservice/pdf(id=${a.id})}" data-toggle="tooltip"  data-placement="right" title="View" class="mybadge_pdf badge-secondary">-->
+<!--                                    &lt;!&ndash;                       <i class="fa fa-file pdf_icon" aria-hidden="true"></i>&ndash;&gt;-->
+<!--                                    <i class="fa fa-eye pdf_icon" aria-hidden="true"></i>-->
+<!--                                </a>-->
+
+
+
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+
+                    </table>
+
+                    <!-- <hr/>
+                     <ul class="nav nav-pills">
+                         <li class="nav-item"
+                           th:each="i : ${#numbers.sequence(0,data.totalPages-1)}">
+                             <a th:href="@{/(page=${i})}" th:text="${i}" class="nav-link"></a>
+                         </li>
+                     </ul>-->
+                    <div class="pagination-div">
+<!--                        <span th:if="${invoice.hasPrevious()}">-->
+<!--                            <a th:href="@{/invoice(page=${invoice.number-1},size=${invoice.size})}">Previous</a>-->
+<!--                        </span>-->
+
+
+                        <th:block th:each="i: ${#numbers.sequence(0, client.totalPages - 1)}" class="block">
+                            <span th:if="${client.number == i}" class="myselected bg-primary">[[${i}+1]]</span>
+                            <span th:unless="${client.number == i}">
+                                      <a th:href="@{invoice(page=${i},size=${client.size})}" class="mypagination " >[[${i}+1]]</a>
+                                </span>
+                        </th:block>
+
+
+
+<!--                        <span th:if="${invoice.hasNext()}">-->
+<!--                            <a th:href="@{invoice(page=${invoice.number+1},size=${invoice.size})}">Next</a>-->
+<!--                        </span>-->
+                    </div>
+                    <div>
+                        <!-- Modal for add and edit invoice -->
+                        <div class="modal fade"  id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog " style="max-width:1050px;" role="document">
+                                <div class="modal-content " >
+                                    <div class="modal-header add_invoice_header">
+                                        <h2 class="modal-title" id="exampleModalLabel">Add Client</h2>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" style="margin-left:50px;max-width:1250px;">
+                                        <form action="#" th:action="@{savecust}"  class="myform" method="post">
+                                            <div class="div-0">
+                                                <input type="hidden" name="c_id" class="form-control">
+                                                <label>Institution / Company Name: <span>*</span></label>
+                                                <input type="text" name="c_name" class="form-control col-5">
+                                            </div>
+                                            <div class="div-0">
+                                                <label>Company Alias Name: <span>*</span></label>
+                                                <input type="text" name="c_al_name" class="form-control col-5">
+                                            </div>
+                                            <div class="div-0">
+                                                <label>Person Name: </label>
+                                                <input type="text" name="p_name" class="form-control col-5">
+                                            </div>
+                                            <div class="div-0">
+                                                <label>Person Designation: </label>
+                                                <input type="text" name="p_desg" class="form-control col-5">
+                                            </div>
+                                            <div class="div-0">
+                                                <label>Title Of Buisness:</label>
+                                                <input type="text" name="b_title" class="form-control col-5">
+                                            </div>
+                                            <div class="div-0">
+                                                <label>Company Email: <span>*</span></label>
+                                                <input type="text" name="c_email" class="form-control col-5">
+                                            </div>
+                                            <div class="div-0">
+                                                <label>Company Contact No:<span>*</span></label>
+                                                <input type="text" name="c_contact" class="form-control col-5">
+                                            </div>
+                                            <div class="div-0">
+                                                <label>GST Number:</label>
+                                                <input type="text" name="gst" class="form-control col-5">
+                                            </div>
+                                            <div class="div-0">
+                                                <label>Address:</label>
+                                                <textarea class="form-control col-5"  id="myTextarea" name="c_address"></textarea>
+<!--                                                <input type="text" name="gst" class="form-control col-5">-->
+                                            </div>
+                                            <div class="div-0">
+                                                <label>Postal Code:<span>*</span></label>
+                                                <input type="text" name="c_post" class="form-control col-5">
+                                            </div>
+                                            <div class="div-0">
+                                                <label>City:<span>*</span></label>
+                                                <input type="text" name="c_city" class="form-control col-5">
+                                            </div>
+
+                                            <div class="div-0">
+                                                <label>State:<span>*</span></label>
+                                                <input type="text" name="c_state" class="form-control col-5">
+                                            </div>
+
+                                            <br>
+                                            <div class="div-1">
+                                                <label class="div-1_label">Bank : <span>*</span></label>
+                                                <div class=" div-1_radio-1">
+                                                    <input class="form-check-input" type="radio" name="isactive" value="true" checked>
+                                                    <label class="form-check-label" for="exampleRadios1">
+                                                        Active
+                                                    </label>
+                                                </div>
+                                                <div class=" div-1_radio-2">
+                                                    <input class="form-check-input" type="radio" name="isactive"  value="false">
+                                                    <label class="form-check-label" for="exampleRadios2">
+                                                        In-active
+                                                    </label>
+                                                </div>
+                                            </div>
+<!--                                            <div class="div-3">-->
+<!--                                                <label class="div-3_label">Clients : <span>*</span></label>-->
+<!--                                                <select class="form-control div-3_select">-->
+<!--                                                    <option selected value="8">8</option>-->
+<!--                                                    <option value="10">10</option>-->
+<!--                                                    <option value="25">25</option>-->
+<!--                                                    <option value="50"> 50</option>-->
+<!--                                                </select>-->
+
+<!--                                            </div>-->
+<!--                                            <hr class="rule">-->
+<!--                                            <div class="div-4">-->
+<!--                                                <label class="div-4_label">Description : <span>*</span></label>-->
+<!--                                                <table class="div-4_table">-->
+<!--                                                    <thead>-->
+<!--                                                    <tr>-->
+<!--                                                        <th class="div-4_star">*</th>-->
+<!--                                                        <th>ITEM</th>-->
+<!--                                                        <th>HSN/SAC</th>-->
+<!--                                                        <th>CAPACITY</th>-->
+<!--                                                        <th>RATE</th>-->
+<!--                                                        <th>NOS</th>-->
+<!--                                                        <th>AMOUNT</th>-->
+<!--                                                    </tr>-->
+<!--                                                    </thead>-->
+<!--                                                    <tbody>-->
+<!--                                                    <tr>-->
+<!--                                                        <td>-->
+<!--                                                            <input type="checkbox" class="mycheckbox" >-->
+<!--                                                        </td>-->
+<!--                                                        <td>-->
+<!--                                                            <input type="text" class="form-control div-4_item" >-->
+<!--                                                        </td>-->
+<!--                                                        <td>-->
+<!--                                                            <input type="text" class="form-control code" >-->
+<!--                                                        </td>-->
+<!--                                                        <td>-->
+<!--                                                            <input type="text" class="form-control capacity" >-->
+<!--                                                        </td>-->
+<!--                                                        <td>-->
+<!--                                                            <input type="text" class="form-control rate" >-->
+<!--                                                        </td>-->
+<!--                                                        <td>-->
+<!--                                                            <input type="text" class="form-control nos" >-->
+<!--                                                        </td>-->
+<!--                                                        <td>-->
+<!--                                                            <input type="text" class="form-control amount" >-->
+<!--                                                        </td>-->
+<!--                                                    </tr>-->
+<!--                                                    </tbody>-->
+<!--                                                </table>-->
+<!--                                            </div>-->
+<!--                                            <div class="div-5">-->
+<!--                                                <label class="div-5_label">Payment Status: <span>*</span></label>-->
+<!--                                                <div class=" div-5_radio-1">-->
+<!--                                                    <input class="form-check-input" type="radio" name="exampleRadios1"  value="Paid By Cheque" checked>-->
+<!--                                                    <label class="form-check-label" for="exampleRadios1">-->
+<!--                                                        Paid By Cheque-->
+<!--                                                    </label>-->
+<!--                                                </div>-->
+<!--                                                <div class=" div-5_radio-2">-->
+<!--                                                    <input class="form-check-input" type="radio" name="exampleRadios1"  value="Successful Online Transfer">-->
+<!--                                                    <label class="form-check-label" for="exampleRadios2">-->
+<!--                                                        Successful Online Transfer-->
+<!--                                                    </label>-->
+<!--                                                </div>-->
+
+<!--                                                <div class=" div-5_radio-3">-->
+<!--                                                    <input class="form-check-input" type="radio" name="exampleRadios1"  value="Paid in Cash">-->
+<!--                                                    <label class="form-check-label" for="exampleRadios3">-->
+<!--                                                        Paid in Cash-->
+<!--                                                    </label>-->
+<!--                                                </div>-->
+
+<!--                                                <div class=" div-5_radio-4">-->
+<!--                                                    <input class="form-check-input" type="radio" name="exampleRadios1"  value="Pending">-->
+<!--                                                    <label class="form-check-label" for="exampleRadios4">-->
+<!--                                                        Pending-->
+<!--                                                    </label>-->
+<!--                                                </div>-->
+
+<!--                                            </div>-->
+                                            <!-- <label>Customer Contact</label>
+                                             <input type="text" th:field="*{contact}" class="form-control col-5">
+                                             <br>
+                                             <input type="submit" class="btn btn-outline-dark" value="Add Customer">
+                                             <a th:href="@{init}" class="btn btn-outline-primary">
+                                                 Back
+                                             </a>-->
+
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Close"></input>
+                                        <input type="button" class="btn btn-primary save" value="Save"></input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Delete Modal-->
+                        <div class="modal fade"  id="delete_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-md"  role="document">
+                                <div class="modal-content " >
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="exampleModalLabel1">Delete Invoice</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" style="margin-left:50px;max-width:1250px;">
+                                        <form action="#" th:action="@{delete_invoice}"  class="delete_myform" method="post">
+                                            <div class=" alert alert-danger">
+                                                <!--<label>Invoice Date : <span>*</span></label>
+                                                <input type="date" name="date" class="form-control col-5">-->
+                                                Are you sure you want to delete company id <label class="company_id"></label> .
+                                            </div>
+                                            <input type="hidden" name="delete_id" class="delete_id">
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer delete_footer">
+                                        <button type="button" class="btn btn-secondary delete_close" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-danger delete_btn">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+</body>
+</html>

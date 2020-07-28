@@ -1,5 +1,6 @@
 package com.FireService.PrathamFireService.Controller;
 
+import com.FireService.PrathamFireService.Dao.ClientRepo;
 import com.FireService.PrathamFireService.Dao.InvoicePageRepo;
 import com.FireService.PrathamFireService.Dao.InvoiceRepo;
 import com.FireService.PrathamFireService.Model.Invoice;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,15 +26,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
-@org.springframework.stereotype.Controller
+@Controller
 @RequestMapping("/fireservice")
-public class Controller {
+public class InvoiceController {
 
     @Autowired
     private InvoiceRepo invoiceRepo;
 
     @Autowired
     private InvoicePageRepo invoicePageRepo;
+
+    @Autowired
+    private ClientRepo clientRepo;
+
     @GetMapping("/home")
     public String homepage(Model model){
 //        model.addAttribute("invoice",invoiceRepo.findAll());
@@ -42,6 +48,9 @@ public class Controller {
     @GetMapping("/invoice")
     public String invoice(Model model, @PageableDefault(size = 8) Pageable pageable){
         model.addAttribute("invoice",invoiceRepo.findAll(pageable));
+        model.addAttribute("client",clientRepo.findAll());
+        model.addAttribute("selectedid",clientRepo.findAll().get(0).getId());
+//        model.addAttribute("selectedid",24);
         return "invoice";
     }
 
@@ -67,6 +76,8 @@ public class Controller {
         invoiceRepo.save(invoice);
         return "ok";
     }
+
+
 
     @PostMapping("/delete_invoice")
     public void getmodel(HttpServletRequest request){

@@ -24,23 +24,26 @@ public class InvoicePdfExporter {
 
     private Invoice invoice;
 
+    private Client client;
+
     private JavaMailSender javaMailSender;
 
     public InvoicePdfExporter(Invoice invoice) {
         this.invoice = invoice;
+        this.client=invoice.getClient();
     }
 
     private void add_table_header(PdfPTable pdfPTable){
         PdfPCell cell=new PdfPCell();
         Font font=FontFactory.getFont(FontFactory.HELVETICA_BOLD);
         font.setColor(Color.BLACK);
-        font.setSize(11);
+        font.setSize(10);
 
         cell.setBackgroundColor(Color.WHITE);
         cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
         cell.setPaddingLeft(5);
-        cell.setPaddingTop(5);
-        cell.setPaddingBottom(5);
+        cell.setPaddingTop(6);
+        cell.setPaddingBottom(6);
         //cell.setPadding(10);
         //cell.setColspan(1);
 
@@ -53,22 +56,22 @@ public class InvoicePdfExporter {
 //        cell.setPhrase(new Phrase("Client",font));
 //        pdfPTable.addCell(cell);
 
-        cell.setPhrase(new Phrase("Item",font));
+        cell.setPhrase(new Phrase("Item".toUpperCase(),font));
         pdfPTable.addCell(cell);
 
-        cell.setPhrase(new Phrase("HSN/SAC",font));
+        cell.setPhrase(new Phrase("HSN/SAC".toUpperCase(),font));
         pdfPTable.addCell(cell);
 
-        cell.setPhrase(new Phrase("Capacity",font));
+        cell.setPhrase(new Phrase("Capacity".toUpperCase(),font));
         pdfPTable.addCell(cell);
 
-        cell.setPhrase(new Phrase("Rate",font));
+        cell.setPhrase(new Phrase("Rate".toUpperCase(),font));
         pdfPTable.addCell(cell);
 
-        cell.setPhrase(new Phrase("Nos",font));
+        cell.setPhrase(new Phrase("Nos".toUpperCase(),font));
         pdfPTable.addCell(cell);
 
-        cell.setPhrase(new Phrase("Amount (Rs.)",font));
+        cell.setPhrase(new Phrase("Amount".toUpperCase()+"(Rs.)",font));
         pdfPTable.addCell(cell);
 
 //        cell.setPhrase(new Phrase("Payment Satus",font));
@@ -81,44 +84,149 @@ public class InvoicePdfExporter {
 
     }
 
+    private void add_table_header_client(PdfPTable pdfPTable){
+
+        PdfPCell cell=new PdfPCell();
+        Font font=FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+        font.setColor(Color.BLACK);
+        font.setSize(10);
+
+        Font font_data=FontFactory.getFont(FontFactory.HELVETICA);
+        font_data.setColor(Color.BLACK);
+        font_data.setSize(10);
+
+
+        cell.setBackgroundColor(Color.WHITE);
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+        cell.setPaddingLeft(5);
+        cell.setPaddingTop(0);
+        cell.setPaddingBottom(6);
+
+
+        Paragraph paragraph=new Paragraph();
+        paragraph.add(new Phrase("To,\n",font));
+        paragraph.add(new Phrase(this.client.getC_name()+"\n",font_data));
+        paragraph.add(new Phrase(this.client.getC_alias_name()+Chunk.NEWLINE,font_data));
+        paragraph.add(new Phrase(Chunk.NEWLINE+"GST No:\t",font));
+        paragraph.add(new Phrase(this.client.getGst_num(),font_data));
+
+
+        Phrase phrase=new Phrase(paragraph);
+
+        cell.addElement(phrase);
+        pdfPTable.addCell(cell);
+
+        Paragraph paragraph1=new Paragraph();
+        paragraph1.add(new Phrase("Invoice: ",font));
+        paragraph1.add(new Phrase(String.valueOf(this.invoice.getId()),font_data));
+
+
+        Phrase phrase1=new Phrase(paragraph1);
+        phrase1.add(new Phrase(Chunk.NEWLINE+"\nInvoice Date:\t",font));
+        phrase1.add(new Phrase(this.invoice.getDate(),font_data));
+        PdfPCell newPdfPCell=new PdfPCell();
+        newPdfPCell.addElement(phrase1);
+        pdfPTable.addCell(newPdfPCell);
+
+       /* Paragraph paragraph2=new Paragraph();
+        paragraph2.add(new Phrase("Seller Detail: ",font));
+        paragraph2.add(new Phrase("NAME:\t",font));
+        paragraph2.add(new Phrase("PRATHAM FIRE SERVICE",font_data));
+        paragraph2.add(new Phrase(Chunk.NEWLINE+"EMAIL:\t",font));
+        paragraph2.add(new Phrase("prathamfireservice@gmail.com",font_data));
+        paragraph2.add(new Phrase(Chunk.NEWLINE+"GST NO:\t",font));
+        paragraph2.add(new Phrase("24ABZPT8058P1ZA",font_data));
+
+        Phrase phrase2=new Phrase(paragraph2);*/
+
+
+
+
+
+    }
+
+    private void add_table_client_seller_detail(PdfPTable pdfPTable){
+
+        Font font=FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+        font.setColor(Color.BLACK);
+        font.setSize(10);
+
+        Font font_data=FontFactory.getFont(FontFactory.HELVETICA);
+        font_data.setColor(Color.BLACK);
+        font_data.setSize(10);
+
+        Paragraph paragraph2=new Paragraph();
+        paragraph2.add(new Phrase("Seller Detail: ",font));
+        paragraph2.add(new Phrase("NAME:\t",font));
+        paragraph2.add(new Phrase("PRATHAM FIRE SERVICE",font_data));
+        paragraph2.add(new Phrase(Chunk.NEWLINE+"EMAIL:\t",font));
+        paragraph2.add(new Phrase("prathamfireservice@gmail.com",font_data));
+        paragraph2.add(new Phrase(Chunk.NEWLINE+"GST NO:\t",font));
+        paragraph2.add(new Phrase("24ABZPT8058P1ZA",font_data));
+
+        PdfPCell newPdfPCell=new PdfPCell();
+
+
+        Phrase phrase2=new Phrase(paragraph2);
+        newPdfPCell.addElement(phrase2);
+        pdfPTable.addCell(newPdfPCell);
+
+    }
+
     private void add_table_invoice_data(Invoice invoice,PdfPTable pdfPTable){
+
         Font font=FontFactory.getFont(FontFactory.HELVETICA);
         font.setColor(Color.BLACK);
-        font.setSize(11);
+        font.setSize(10);
         PdfPCell cell=new PdfPCell();
         cell.setPaddingLeft(5);
-        cell.setPaddingTop(8);
-        cell.setPaddingBottom(8);
-        cell.setPhrase(new Phrase(String.valueOf("1"),font));
-        pdfPTable.addCell(cell);
+        cell.setPaddingTop(6);
+        cell.setPaddingBottom(6);
+//        cell.setPhrase(new Phrase(String.valueOf("1"),font));
+//        pdfPTable.addCell(cell);
+
 //        cell.setPhrase(new Phrase(String.valueOf(invoice.getBank()),font));
 //        pdfPTable.addCell(cell);
 //        cell.setPhrase(new Phrase(String.valueOf(invoice.getClient()),font));
 //        pdfPTable.addCell(cell);
+        Client client=invoice.getClient();
+        Double amount=Double.valueOf(0);
+        int i=0;
+        for (Invoice curr:client.getInvoices()) {
 
-        cell.setPhrase(new Phrase(String.valueOf(invoice.getItem()),font));
-        pdfPTable.addCell(cell);
+            cell.setPhrase(new Phrase(String.valueOf(i+1),font));
+            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+            pdfPTable.addCell(cell);
 
-        cell.setPhrase(new Phrase(String.valueOf(invoice.getCode()),font));
-        pdfPTable.addCell(cell);
+            cell.setPhrase(new Phrase(String.valueOf(curr.getItem()),font));
+            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+            pdfPTable.addCell(cell);
 
-        cell.setPhrase(new Phrase(String.valueOf(invoice.getCapacity()),font));
-        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
-        cell.setPaddingRight(7f);
-        pdfPTable.addCell(cell);
-        cell.setPhrase(new Phrase(String.valueOf(invoice.getRate()),font));
-        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
-        cell.setPaddingRight(7f);
-        pdfPTable.addCell(cell);
+            cell.setPhrase(new Phrase(String.valueOf(curr.getCode()),font));
+            cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+            pdfPTable.addCell(cell);
 
-        cell.setPhrase(new Phrase(String.valueOf(invoice.getNos()),font));
-        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
-        cell.setPaddingRight(3f);
-        pdfPTable.addCell(cell);
-        cell.setPhrase(new Phrase(String.valueOf(invoice.getAmount()),font));
-        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
-        cell.setPaddingRight(7f);
-        pdfPTable.addCell(cell);
+            cell.setPhrase(new Phrase(String.valueOf(curr.getCapacity()),font));
+            cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+            cell.setPaddingRight(7f);
+            pdfPTable.addCell(cell);
+            cell.setPhrase(new Phrase(String.valueOf(curr.getRate()),font));
+            cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+            cell.setPaddingRight(7f);
+            pdfPTable.addCell(cell);
+
+            cell.setPhrase(new Phrase(String.valueOf(curr.getNos()),font));
+            cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+            cell.setPaddingRight(3f);
+            pdfPTable.addCell(cell);
+            cell.setPhrase(new Phrase(String.valueOf(curr.getAmount()),font));
+            cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
+            cell.setPaddingRight(7f);
+            pdfPTable.addCell(cell);
+            amount+=Double.valueOf(curr.getAmount());
+            i++;
+        }
+
 
         //Total Amount
         //PdfPCell cell_amount=new PdfPCell();
@@ -128,7 +236,7 @@ public class InvoicePdfExporter {
         cell.setColspan(6);
         pdfPTable.addCell(cell);
 
-        cell.setPhrase(new Phrase(String.valueOf(invoice.getAmount()),font));
+        cell.setPhrase(new Phrase(String.valueOf(amount),font));
         cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
         cell.setPaddingRight(7f);
         cell.setColspan(1);
@@ -141,7 +249,7 @@ public class InvoicePdfExporter {
         cell.setColspan(6);
         pdfPTable.addCell(cell);
 
-        int k = (int)(invoice.getAmount() *(9.0f/100.0f));
+        int k = (int)(amount *(9.0f/100.0f));
 
 
         cell.setPhrase(new Phrase(String.valueOf(k),font));
@@ -175,43 +283,13 @@ public class InvoicePdfExporter {
         pdfPTable.addCell(cell);
 
 
-        cell.setPhrase(new Phrase(String.valueOf(k+invoice.getAmount()),font));
+        cell.setPhrase(new Phrase(String.valueOf((k*2)+amount),font));
         cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
         cell.setPaddingRight(7f);
         cell.setColspan(1);
         pdfPTable.addCell(cell);
 
 
-//        cell.setPhrase(new Phrase(String.valueOf(invoice.getPayment()),font));
-//        pdfPTable.addCell(cell);
-
-//        cell.setPhrase(new Phrase(String.valueOf(invoice.getDate()),font));
-//        pdfPTable.addCell(cell);
-//        cell.setPhrase(new Phrase(String.valueOf(invoice.getId()),font));
-//        pdfPTable.addCell(cell);
-
-
-        /*pdfPTable.addCell(new Phrase(String.valueOf(invoice.getBank()),font));
-        pdfPTable.addCell(new Phrase(String.valueOf(invoice.getClient()),font));
-        pdfPTable.addCell(new Phrase(String.valueOf(invoice.getItem()),font));
-        pdfPTable.addCell(new Phrase(String.valueOf(invoice.getCode()),font));
-        pdfPTable.addCell(new Phrase(String.valueOf(invoice.getCapacity()),font));
-        pdfPTable.addCell(new Phrase(String.valueOf(invoice.getRate()),font));
-        pdfPTable.addCell(new Phrase(String.valueOf(invoice.getNos()),font));
-        pdfPTable.addCell(new Phrase(String.valueOf(invoice.getAmount()),font));
-        pdfPTable.addCell(new Phrase(String.valueOf(invoice.getPayment()),font));
-        pdfPTable.addCell(new Phrase(String.valueOf(invoice.getDate()),font));*/
-
-        /*pdfPTable.addCell(String.valueOf(invoice.getBank()));
-        pdfPTable.addCell(String.valueOf(invoice.getClient()));
-        pdfPTable.addCell(String.valueOf(invoice.getItem()));
-        pdfPTable.addCell(String.valueOf(invoice.getCode()));
-        pdfPTable.addCell(String.valueOf(invoice.getCapacity()));
-        pdfPTable.addCell(String.valueOf(invoice.getRate()));
-        pdfPTable.addCell(String.valueOf(invoice.getNos()));
-        pdfPTable.addCell(String.valueOf(invoice.getAmount()));
-        pdfPTable.addCell(String.valueOf(invoice.getPayment()));
-        pdfPTable.addCell(String.valueOf(invoice.getDate()));*/
 
     }
 
@@ -259,15 +337,22 @@ public class InvoicePdfExporter {
         document.add(paragraph);
         document.add(paragraph1);
 
+        PdfPTable pdfPTable_client=new PdfPTable(2);
+        pdfPTable_client.setWidthPercentage(100);
+        pdfPTable_client.setSpacingBefore(20);
 
+        add_table_header_client(pdfPTable_client);
+//        add_table_client_seller_detail(pdfPTable_client);
 
         PdfPTable pdfPTable=new PdfPTable(7);
 
+
         pdfPTable.setWidthPercentage(100);
-        //pdfPTable.setWidths(new float[]{1f,1.5f,3f,1.5f,1.5f,1.7f,1.2f,1f,3f,3f,1.5f});
+       // pdfPTable.setWidths(new float[]{0.7f,2.5f,1.3f,1f,1.3f,1.7f,1.2f});
         pdfPTable.setSpacingBefore(20);
         add_table_header(pdfPTable);
         add_table_invoice_data(this.invoice,pdfPTable);
+        document.add(pdfPTable_client);
         document.add(pdfPTable);
 
         Font font2= FontFactory.getFont(FontFactory.HELVETICA_BOLD);

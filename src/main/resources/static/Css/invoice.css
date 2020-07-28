@@ -162,6 +162,7 @@ span{
 
 
 
+
 .div-1_radio-1 {
     display:inline-block;
     margin-left:38px;
@@ -378,6 +379,27 @@ span{
 .delete_myform{
     margin-left:-50px;
 }
+
+
+
+
+/*Modal Scroll*/
+/* Important part
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    height: auto;
+    overflow-y: auto;
+}*/
+
+.div-3{
+    height:30px;
+}
+
+
+
+
 
 
 

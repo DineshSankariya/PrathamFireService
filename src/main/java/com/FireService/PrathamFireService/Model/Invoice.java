@@ -1,5 +1,8 @@
 package com.FireService.PrathamFireService.Model;
 
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,9 +26,7 @@ public class Invoice {
     @NotEmpty(message = "is required")
     private String bank;
 
-    @Column(name = "Client")
-    @NotEmpty(message = "is required")
-    private String client;
+
 
     @Column(name = "Item")
     @NotEmpty(message = "is required")
@@ -59,6 +60,11 @@ public class Invoice {
     @NotEmpty(message = "is required")
     private String date;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "c_id")
+    @JsonBackReference
+    private Client client;
+
     public Integer getId() {
         return id;
     }
@@ -67,8 +73,13 @@ public class Invoice {
         return bank;
     }
 
-    public String getClient() {
+
+    public Client getClient() {
         return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public String getItem() {
@@ -101,5 +112,22 @@ public class Invoice {
 
     public String getDate() {
         return date;
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "id=" + id +
+                ", bank='" + bank + '\'' +
+                ", item='" + item + '\'' +
+                ", code='" + code + '\'' +
+                ", capacity=" + capacity +
+                ", rate=" + rate +
+                ", nos=" + nos +
+                ", amount=" + amount +
+                ", payment='" + payment + '\'' +
+                ", date='" + date + '\'' +
+                ", client=" + client.toString() +
+                '}';
     }
 }

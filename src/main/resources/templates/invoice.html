@@ -1,25 +1,30 @@
 <!DOCTYPE html>
+
+
 <html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+<head >
+<!--    <meta charset="UTF-8">-->
     <title>PATHAM FIRE SERVICE</title>
+    <div th:insert="~{headerdocument::header}">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/invoice.css}">
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </div>
     <script th:src="@{/javascript/invoice.js}"></script>
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+
+<!--    <link rel="stylesheet" th:href="@{/css/header.css}">-->
+<!--    <link rel="stylesheet" th:href="@{/css/invoice.css}">-->
+
+<!--    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
+<!--    <script th:src="@{/javascript/invoice.js}"></script>-->
 
 
-    <!--<link rel="stylesheet" th:href="@{/Css/font-awesome.min.css}">-->
+<!--    &lt;!&ndash;<link rel="stylesheet" th:href="@{/Css/font-awesome.min.css}">&ndash;&gt;-->
 
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<!--    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>-->
 
 </head>
 <body>
@@ -73,13 +78,13 @@
                 <td th:text="${a.item}"></td>
                 <td th:text="${a.payment}" ></td>
                <td id="action_links">
-                    <a th:href="@{editinvoice(id=${a.id})}" data-toggle="tooltip" data-placement="left" title="Edit Invoice" class="mybadge_edit badge-info ">
+                    <a th:href="@{/fireservice/editinvoice(id=${a.id})}" data-toggle="tooltip" data-placement="left" title="Edit Invoice" class="mybadge_edit badge-info ">
                         <i class="fa fa-pencil edit_icon" aria-hidden="true"></i>
                     </a>
-                    <a th:href="@{delete(customer=${a.id})}" data-toggle="tooltip" data-placement="left" title="Delete Invoice" class="mybadge_delete badge-danger">
+                    <a th:href="@{/fireservice/delete(customer=${a.id})}" data-toggle="tooltip" data-placement="left" title="Delete Invoice" class="mybadge_delete badge-danger">
                         <i class="fa fa-trash delete_icon" aria-hidden="true"></i>
                     </a>
-                   <a th:href="@{pdf(id=${a.id})}" data-toggle="tooltip"  data-placement="right" title="View" class="mybadge_pdf badge-secondary">
+                   <a th:href="@{/fireservice/pdf(id=${a.id})}" data-toggle="tooltip"  data-placement="right" title="View" class="mybadge_pdf badge-secondary">
 <!--                       <i class="fa fa-file pdf_icon" aria-hidden="true"></i>-->
                        <i class="fa fa-eye pdf_icon" aria-hidden="true"></i>
                    </a>
@@ -129,8 +134,9 @@
                             <div class="modal-body" style="margin-left:50px;max-width:1250px;">
                                 <form action="#" th:action="@{savecust}"  class="myform" method="post">
                                     <div class="div-0">
+                                        <input type="hidden" name="i_id" class="form-control">
                                         <label>Invoice Date : <span>*</span></label>
-                                        <input type="date" name="date" class="form-control col-5">
+                                        <input type="date" name="date" class="form-control col-3">
                                     </div>
                                     <br>
                                     <div class="div-1">
@@ -150,11 +156,18 @@
                                     </div>
                                     <div class="div-3">
                                         <label class="div-3_label">Clients : <span>*</span></label>
+
                                         <select class="form-control div-3_select">
-                                            <option selected value="8">8</option>
-                                            <option value="10">10</option>
-                                            <option value="25">25</option>
-                                            <option value="50"> 50</option>
+<!--                                            <option selected value="8">8</option>-->
+<!--                                            <option value="10">10</option>-->
+<!--                                            <option value="25">25</option>-->
+<!--                                            <option value="50"> 50</option>-->
+
+                                            <option th:each="user : ${client}"
+                                                    th:value="${user.id}"
+                                                    th:selected="${user.isSelected(selectedid)}"
+                                                    th:text="${user.c_name}">
+                                            </option>
                                         </select>
 
                                     </div>
@@ -242,7 +255,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary save">Save</button>
+                                <input type="button" class="btn btn-primary save"  value="Save"/>
                             </div>
                         </div>
                     </div>
@@ -269,7 +282,7 @@
                             </div>
                             <div class="modal-footer delete_footer">
                                 <button type="button" class="btn btn-secondary delete_close" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary delete_btn">Delete</button>
+                                <button type="button" class="btn btn-danger delete_btn">Delete</button>
                             </div>
                         </div>
                     </div>
