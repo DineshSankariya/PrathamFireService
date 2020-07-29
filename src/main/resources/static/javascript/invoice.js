@@ -110,7 +110,7 @@
                                     }
 
                                   var datatopass={"invoice":data};
-
+                                  console.log(datatopass);
                                         $.ajax({
                                             contentType: 'application/json;charset=UTF-8',
                                             url:url,

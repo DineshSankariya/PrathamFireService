@@ -81,10 +81,12 @@ public class Client {
 
     public void add_invoice(Invoice invoice){
 
-        if(check_invoice(invoice.getItem())<0){
+
             this.invoices.add(invoice);
+
+            invoice.setClient(this);
+
             System.out.println("####################  saved successfully #####################");
-        }
 
     }
 

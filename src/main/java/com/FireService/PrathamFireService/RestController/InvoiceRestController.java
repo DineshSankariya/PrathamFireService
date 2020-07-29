@@ -76,10 +76,12 @@ public class InvoiceRestController {
     public String update(@RequestBody Invoice invoice){
         System.out.println(invoice.toString());
         Client client=clientRepo.findById(invoice.getClient().getId()).get();
-        client.add_invoice(invoice);
-        invoice.setClient(client);
 
-        invoiceRepo.save(invoice);
+        invoice.setClient(client);
+//        client.add_invoice(invoice);
+        //invoice.setClient(client);
+
+         invoiceRepo.save(invoice);
         return "{\"success\":\"ok\"}";
     }
 
