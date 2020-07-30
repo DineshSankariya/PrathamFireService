@@ -3,3 +3,79 @@
      border-bottom-right-radius:5px;
      padding-right:13px;
 }
+
+.div-0 input[type="text"]{
+    margin-left:20px;
+}
+
+.div-0:nth-child(2) label{
+    margin-left:49px;
+}
+
+.div-0:nth-child(3) label{
+    margin-left:116.5px;
+}
+
+.div-0:nth-child(4) label{
+    margin-left:74.5px;
+}
+
+.div-0:nth-child(5) label{
+    margin-left:96px;
+}
+
+.div-0:nth-child(6) label{
+    margin-left:92px;
+}
+.div-0:nth-child(7) label{
+    margin-left:53px;
+}
+.div-0:nth-child(7) label{
+    margin-left:53px;
+}
+.div-0:nth-child(8) label{
+     margin-left:120px;
+ }
+
+ .div-0:nth-child(9){
+    display:block;
+ }
+
+ .div-0:nth-child(9) label{
+      margin-left:153px;
+      position:relative;
+      top:-40px;
+
+      display:inline-block;
+  }
+  .div-0:nth-child(9) textarea{
+        display:inline-block;
+        margin-top:20px;
+        margin-left:21px;
+
+    }
+
+.div-0:nth-child(10) label{
+     margin-left:119.5px;
+}
+
+
+.div-0:nth-child(11) label{
+     margin-left:177.5px;
+}
+
+.div-0:nth-child(12) label{
+     margin-left:168.6px;
+}
+
+.div-1 .div-1_label{
+    margin-left:170px;
+}
+
+.div-0{
+    padding-top:20px;
+}
+
+.myform{
+    padding-left:100px;
+}

@@ -60,7 +60,7 @@ public class InvoiceRestController {
         System.out.println(invoice.toString());
         Client client=clientRepo.findById(invoice.getClient().getId()).get();
         client.add_invoice(invoice);
-        invoice.setClient(client);
+//        invoice.setClient(client);
 
         invoiceRepo.save(invoice);
         //return new ResponseEntity<Invoice>(invoiceRepo.deleteById(id);, HttpStatus.OK);
@@ -71,18 +71,24 @@ public class InvoiceRestController {
 
 
 
+
     @PutMapping(value = "updateinvoice")
-    public String update(@RequestBody Invoice invoice){
+    @ResponseBody
+    public String update_invoice(@RequestBody Invoice invoice){
         System.out.println(invoice.toString());
         Client client=clientRepo.findById(invoice.getClient().getId()).get();
 
-        invoice.setClient(client);
-//        client.add_invoice(invoice);
-        //invoice.setClient(client);
 
-         invoiceRepo.save(invoice);
+//        client.add_invoice(invoice);
+        invoice.setClient(client);
+
+        invoiceRepo.save(invoice);
         return "{\"success\":\"ok\"}";
+
     }
+
+
+
 
 
 }
