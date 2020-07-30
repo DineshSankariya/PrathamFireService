@@ -99,7 +99,7 @@
                                     var httptype='';
                                     if($('.save').val()=="Update"){
                                        var inv_id=$("input[name='i_id']").val();
-                                       data.id=inv_id;
+                                       data.id=parseInt(inv_id);
 
                                        url='/invoicerest/updateinvoice';
                                        httptype='PUT'

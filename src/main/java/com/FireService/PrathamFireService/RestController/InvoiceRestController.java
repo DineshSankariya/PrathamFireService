@@ -71,8 +71,7 @@ public class InvoiceRestController {
 
 
 
-    @RequestMapping(value = "updateinvoice",method = RequestMethod.PUT)
-    @ResponseBody
+    @PutMapping(value = "updateinvoice")
     public String update(@RequestBody Invoice invoice){
         System.out.println(invoice.toString());
         Client client=clientRepo.findById(invoice.getClient().getId()).get();
