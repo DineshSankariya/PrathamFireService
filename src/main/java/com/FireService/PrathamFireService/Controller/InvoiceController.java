@@ -3,8 +3,10 @@ package com.FireService.PrathamFireService.Controller;
 import com.FireService.PrathamFireService.Dao.ClientRepo;
 import com.FireService.PrathamFireService.Dao.InvoicePageRepo;
 import com.FireService.PrathamFireService.Dao.InvoiceRepo;
+import com.FireService.PrathamFireService.Dao.LoggingRepo;
 import com.FireService.PrathamFireService.Model.Invoice;
 import com.FireService.PrathamFireService.Model.InvoicePdfExporter;
+import com.FireService.PrathamFireService.Model.LoggingDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +23,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Principal;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
@@ -39,9 +43,18 @@ public class InvoiceController {
     @Autowired
     private ClientRepo clientRepo;
 
+    @Autowired
+    private LoggingRepo loggingRepo;
+
     @GetMapping("/home")
-    public String homepage(Model model){
+    public String homepage(Model model, Principal principal) throws ParseException {
 //        model.addAttribute("invoice",invoiceRepo.findAll());
+        System.out.println(principal.getName()+"  "+principal.hashCode());
+        LoggingDetails loggingDetails=new LoggingDetails();
+        loggingDetails.setUsername(principal.getName());
+        loggingDetails.setDate(new Date());
+        loggingRepo.save(loggingDetails);
+        model.addAttribute("user",principal.getName().toUpperCase());
         return "home";
     }
 
