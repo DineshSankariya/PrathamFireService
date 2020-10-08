@@ -29,7 +29,7 @@
 
 </head>
 <body>
-<div th:insert="~{header::header}"></div>
+<div th:insert="~{header::header(user=${user})}"></div>
 <div class="container_invoice">
     <div class="container_line-1">
          <h1>Invoices</h1>
@@ -164,9 +164,8 @@
 <!--                                            <option value="25">25</option>-->
 <!--                                            <option value="50"> 50</option>-->
 
-                                            <option th:each="user : ${client}"
+                                            <option  th:each="user : ${client}"
                                                     th:value="${user.id}"
-                                                    th:selected="${user.isSelected(selectedid)}"
                                                     th:text="${user.c_name}">
                                             </option>
                                         </select>

@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/clientservice")
 public class ClientController {
@@ -18,8 +20,9 @@ public class ClientController {
     private ClientRepo clientRepo;
 
     @GetMapping("/client")
-    public String invoice(Model model, @PageableDefault(size = 8) Pageable pageable){
+    public String invoice(Model model, @PageableDefault(size = 8) Pageable pageable, Principal principal){
         model.addAttribute("client",clientRepo.findAll(pageable));
+        model.addAttribute("user",principal.getName().toUpperCase());
         return "client";
     }
 

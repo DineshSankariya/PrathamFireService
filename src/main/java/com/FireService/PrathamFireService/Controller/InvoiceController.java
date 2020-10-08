@@ -59,10 +59,16 @@ public class InvoiceController {
     }
 
     @GetMapping("/invoice")
-    public String invoice(Model model, @PageableDefault(size = 8) Pageable pageable){
+    public String invoice(Model model, @PageableDefault(size = 8) Pageable pageable,Principal principal){
         model.addAttribute("invoice",invoiceRepo.findAll(pageable));
         model.addAttribute("client",clientRepo.findAll());
-        model.addAttribute("selectedid",clientRepo.findAll().get(0).getId());
+        System.out.println(clientRepo.findAll().size());
+        if(invoiceRepo.findAll().size()>0){
+            model.addAttribute("selectedid",clientRepo.findAll());
+        }else{
+            model.addAttribute("selectedid",null);
+        }
+        model.addAttribute("user",principal.getName().toUpperCase());
 //        model.addAttribute("selectedid",24);
         return "invoice";
     }
@@ -103,7 +109,7 @@ public class InvoiceController {
 
 
     @GetMapping("/pdf")
-    public void pdf(@RequestParam("id")int id, HttpServletResponse response) throws IOException, MessagingException {
+    public void pdf(@RequestParam("id")int id, HttpServletResponse response) throws IOException, MessagingException, ParseException {
         response.setContentType("application/pdf");
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
         String date=simpleDateFormat.format(new Date());
@@ -119,7 +125,7 @@ public class InvoiceController {
         String headervalue="inline;filename="+date+"\\"+date1+" Invoice_id-"+String.valueOf(id)+".pdf";
         response.setHeader(headerkey,headervalue);
         InvoicePdfExporter invoicePdfExporter=new InvoicePdfExporter(invoiceRepo.findById(id).get());
-        invoicePdfExporter.export(response);
+        invoicePdfExporter.export_new(response);
     }
 
 //    @GetMapping("/pdf_download")

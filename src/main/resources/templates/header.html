@@ -8,7 +8,7 @@
 
         <nav th:fragment="header">
             <nav class="navbar navbar-expand-lg bg-dark">
-                <a class="navbar-brand text-light  mybrand" th:href="@{home}">PRATHAM FIRE SERVICE</a>
+                <a class="navbar-brand text-light  mybrand" th:href="@{/fireservice/home}">PRATHAM FIRE SERVICE</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -21,9 +21,9 @@
                         <li class="nav-item active ">
                             <a class="nav-link text-light" th:href="@{/fireservice/invoice}">Invoice <span class="sr-only">(current)</span></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light"  th:inline="text">[[${user}]]</a>
-                        </li>
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link text-light"  th:inline="text">[[${user}]]</a>-->
+<!--                        </li>-->
                         <li class="nav-item dropdown mylinks">
                            <!-- <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 UserName
@@ -41,7 +41,9 @@
 <!--                                <option><a class="dropdown-item" href="#">Action</a></option>-->
 <!--                                <option><a class="dropdown-item" href="#">Action</a></option>-->
 
+                                <option><a  class=" dropdown-item profile"  th:inline="text">[[${user}]]</a></option>
                                 <option><a  class=" dropdown-item log">Log out</a></option>
+
                             </select>
                         </li>
                         <!--<li class="nav-item">
